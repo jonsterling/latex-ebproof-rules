@@ -9,10 +9,11 @@ package.
 The following files are included:
 - `ebproof-rules.dtx` : the doctrip source for the package and documentation
 - `ebproof-rules.ins` : the generation script for producing `ebproof-rules.sty`
-- `ebproof-rules.pdf` : the compiled documentation
 
 The package requires `expl3` (the LaTeX3 programming environment) which
 provides many useful programming tools.
+
+To build the documenation, run `l3build doc`.
 
 
 License
