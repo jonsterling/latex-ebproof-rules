@@ -1,0 +1,125 @@
+% \iffalse meta-comment
+%
+% Copyright (C) 2022 by Jonathan Sterling
+%
+% This file may be distributed and/or modified under the conditions of the
+% LaTeX Project Public License, either version 1.3 of this license or (at
+% your option) any later version. The latest version of this license is in:
+%
+%   http://www.latex-project.org/lppl.txt
+%
+% and version 1.3 or later is part of all distributions of LaTeX version
+% 2005/12/01 or later.
+%
+%<*driver>
+\documentclass[full]{l3doc}
+\usepackage{mathpartir}
+\usepackage{ebproof-rules}
+\usepackage{mlmodern}
+\EnableCrossrefs
+\newenvironment{example}{%
+  \VerbatimEnvironment
+  \begin{VerbatimOut}{example.tex}}{%
+  \end{VerbatimOut}
+  \begin{center}
+  \begin{minipage}{.4\textwidth}
+    \input{example.tex}
+  \end{minipage}%
+  \begin{minipage}{.6\textwidth}
+    \small\VerbatimInput[gobble=0]{example.tex}
+  \end{minipage}%
+  \end{center}
+}
+\begin{document}
+  \DocInput{\jobname.dtx}
+\end{document}
+%</driver>
+% \fi
+%
+% \title{^^A
+%   The \pkg{ebproof-rules} package ^^A
+% }
+%
+% \author{^^A
+%   Jonathan Sterling\thanks
+%     {^^A
+%       E-mail:  \href{mailto:jon@jonmsterling.com}{jon@jonmsterling.com}^^A
+%     }^^A
+% }
+%
+% \date{Version 1.0 -- Released 2022-03-10}
+%
+% \maketitle
+%
+% \setcounter{tocdepth}{2}
+% \tableofcontents
+%
+% \begin{documentation}
+%
+% \section{Documentation}
+% It is not easy to use the \pkg{ebproof} package to typeset inference rules within a \env{mathpar} environment without layout problems.\footnote{See \url{https://framagit.org/manu/ebproof/-/issues/6} for discussion.} This package solves that problem.
+% \begin{function}{\ebrule}
+%   \begin{syntax}
+%     \cs{ebrule}\oarg{title}\marg{body}
+%   \end{syntax}
+%   Create a proof tree that can be included inside a \env{mathpar} environment;
+%   optionally include a \meta{title}, which will be typeset in the style of the \cs{inferrule} command of \pkg{mathpartir}.
+% \end{function}
+%
+% \begin{example}
+%   \begin{mathpar}
+%     \ebrule[foo]{
+%       \hypo{\vdash\mathcal{J}}
+%       \hypo{\vdash\mathcal{J}}
+%       \infer2{\vdash\mathcal{L}}
+%     }
+%     \and
+%     \ebrule[bar]{
+%       \hypo{\vdash\mathcal{J}}
+%       \hypo{\vdash\mathcal{J}}
+%       \infer2{\vdash\mathcal{L}}
+%     }
+%   \end{mathpar}
+% \end{example}
+%
+% \end{documentation}
+%
+% \clearpage \appendix
+%
+% \begin{implementation}
+%
+% \section{Implementation}
+%
+%    \begin{macrocode}
+%<*package>
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{expl3}
+\RequirePackage{xparse}
+\RequirePackage{ebproof}
+\ProvidesExplPackage{ebproof-rules}{2021/01/28}{1.0}{Inference rule support for ebproof}
+%<@@=ebproof_rules>
+%    \end{macrocode}
+%
+% \begin{macro}{\ebrule}
+%    \begin{macrocode}
+\cs_set_eq:NN \l_@@_standard_par \par
+\NewDocumentCommand\ebrule{o +m}{
+  \group_begin:
+    \cs_set_eq:NN \par \l_@@_standard_par
+    \vbox:n{
+      \IfValueT{#1}{\vbox_to_ht:nn {0em} {\hbox:n{\textsc{#1}}}}
+      \hbox:n {
+        \begin{prooftree}
+          #2
+        \end{prooftree}
+      }
+    }
+  \group_end:
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%
+%
+%
+% \end{implementation}

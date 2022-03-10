@@ -1,0 +1,9 @@
+*.aux
+*.log
+*.out
+*.pdf
+*.toc
+*.zip
+example.tex
+/build
+.DS_Store
