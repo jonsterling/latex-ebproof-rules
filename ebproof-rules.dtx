@@ -57,7 +57,7 @@
 % \begin{documentation}
 %
 % \section{Documentation}
-% It is not easy to use the \pkg{ebproof} package to typeset inference rules within a \env{mathpar} environment without layout problems.\footnote{See \url{https://framagit.org/manu/ebproof/-/issues/6} for discussion.} This package solves that problem.
+% It is not easy to use the \pkg{ebproof} package to typeset inference rules within the \env{mathpar} environment provided by \pkg{mathpartir} without layout problems.\footnote{See \url{https://framagit.org/manu/ebproof/-/issues/6} for discussion.} This package solves that problem.
 % \begin{function}{\ebrule}
 %   \begin{syntax}
 %     \cs{ebrule}\oarg{title}\marg{body}
@@ -74,7 +74,7 @@
 %       \infer2{\vdash\mathcal{L}}
 %     }
 %     \and
-%     \ebrule[bar]{
+%     \ebrule{
 %       \hypo{\vdash\mathcal{J}}
 %       \hypo{\vdash\mathcal{J}}
 %       \infer2{\vdash\mathcal{L}}
