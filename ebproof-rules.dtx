@@ -16,7 +16,7 @@
 \usepackage{mathpartir}
 \usepackage{ebproof-rules}
 \usepackage{mlmodern}
-\usepackage{fullpage}
+
 \EnableCrossrefs
 \newenvironment{example}{%
   \VerbatimEnvironment
@@ -97,25 +97,62 @@
 \RequirePackage{expl3}
 \RequirePackage{xparse}
 \RequirePackage{ebproof}
-\ProvidesExplPackage{ebproof-rules}{2022/03/10}{1.0}{mathpar and rule support for ebproof}
+\ProvidesExplPackage{ebproof-rules}{2022/03/10}{1.0}%
+  {mathpar and rule support for ebproof}
 %<@@=ebproof_rules>
 %    \end{macrocode}
 %
-% \begin{macro}{\ebrule}
+% \subsection{Internal functions}
+% \begin{function}{\@@_restore_state:n}
+%    The \env{mathpar} environment rewrites \cs{par} in its scope, but we need to restore it in order for \env{prooftree} environments to typeset correctly.
 %    \begin{macrocode}
 \cs_set_eq:NN \l_@@_standard_par \par
-\NewDocumentCommand\ebrule{o +m}{
+\cs_new:Npn \@@_restore_state:n #1 {
   \group_begin:
     \cs_set_eq:NN \par \l_@@_standard_par
-    \vbox:n{
-      \IfValueT{#1}{\vbox_to_ht:nn {0em} {\hbox:n{\textsc{#1}}}}
-      \hbox:n {
-        \begin{prooftree}
-          #2
-        \end{prooftree}
-      }
-    }
+    #1
   \group_end:
+}
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_plain_rule:n}
+%    \begin{macrocode}
+\cs_new:Npn \@@_plain_rule:n #1 {
+  \@@_restore_state:n {
+    \hbox:n {
+      \begin{prooftree}
+        #1
+      \end{prooftree}
+    }
+  }
+}
+%    \end{macrocode}
+% \end{function}
+%
+% \begin{function}{\@@_titled_rule:nn}
+%    \begin{macrocode}
+\cs_new:Npn \@@_titled_rule:nn #1 #2 {
+  \@@_restore_state:n {
+    \vbox:n{
+      \vbox_to_ht:nn {0em} {\hbox:n {\textsc{#1}}}
+      \@@_plain_rule:n {#2}
+    }
+  }
+}
+%    \end{macrocode}
+% \end{function}
+%
+% \subsection{Exported commands}
+% \begin{macro}{\ebrule}
+%    The main command exported by this package.
+%    \begin{macrocode}
+\NewDocumentCommand\ebrule{o +m}{
+  \IfValueTF{#1}{
+    \@@_titled_rule:nn {#1} {#2}
+  }{
+    \@@_plain_rule:n {#2}
+  }
 }
 %    \end{macrocode}
 % \end{macro}
