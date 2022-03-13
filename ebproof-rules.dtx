@@ -103,7 +103,7 @@
 %    \end{macrocode}
 %
 % \subsection{Internal functions}
-% \begin{function}{\@@_restore_state:n}
+% \begin{macro}{\@@_restore_state:n}
 %    The \env{mathpar} environment rewrites \cs{par} in its scope, but we need to restore it in order for \env{prooftree} environments to typeset correctly.
 %    \begin{macrocode}
 \cs_set_eq:NN \l_@@_standard_par \par
@@ -114,9 +114,9 @@
   \group_end:
 }
 %    \end{macrocode}
-% \end{function}
+% \end{macro}
 %
-% \begin{function}{\@@_plain_rule:n}
+% \begin{macro}{\@@_plain_rule:n}
 %    \begin{macrocode}
 \cs_new:Npn \@@_plain_rule:n #1 {
   \@@_restore_state:n {
@@ -128,9 +128,9 @@
   }
 }
 %    \end{macrocode}
-% \end{function}
+% \end{macro}
 %
-% \begin{function}{\@@_titled_rule:nn}
+% \begin{macro}{\@@_titled_rule:nn}
 %    \begin{macrocode}
 \cs_new:Npn \@@_titled_rule:nn #1 #2 {
   \@@_restore_state:n {
@@ -141,7 +141,7 @@
   }
 }
 %    \end{macrocode}
-% \end{function}
+% \end{macro}
 %
 % \subsection{Exported commands}
 % \begin{macro}{\ebrule}
